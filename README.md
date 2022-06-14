@@ -64,7 +64,7 @@ docker-compose down
 ```
 
 
-4. Para realizar a validação do boleto informe a linha de código na url do navegardor ou utilizando um tester de APIs, como recomendação irei deixar o <a href="https://web.postman.co/home" target="_blank">Postmam</a>
+4. Para realizar a validação do boleto informe a linha de código na url do navegardor ou utilizando um tester de APIs, como recomendação irei deixar o <a href="https://web.postman.co/home" target="_blank">Postman</a>
 
 conforme abaixo:
 
