@@ -2,8 +2,7 @@
 
 ## Descrição do projeto
 
-Projeto desenvolvido para consultar linhas digitáveis de boleto de título bancário e pagamento de concessionárias, verificando se a mesma é válida ou não. 
-Sendo válida e possuindo valor e/ou data de vencimento esses dados são retornados.
+Projeto desenvolvido para consultar linhas digitáveis de boleto de título bancário e pagamento de concessionárias.
 
 Projeto disponibilizado para execução em container Docker ou local.
 
@@ -33,7 +32,12 @@ git clone https://github.com/gasparellodev/billet_ewally.git
 
 
 ```
-npm install ou yarn 
+npm install
+```
+**OU**
+
+```
+yarn 
 ```
 
 
@@ -46,7 +50,12 @@ npm install ou yarn
 
 
 ```
-npm run server ou yarn server
+npm run server
+```
+**OU**
+
+```
+yarn server
 ```
 
 3.2 **Docker**
@@ -106,8 +115,14 @@ Error: Expired due date!
 5.1 **Local**
 
 ```
-npm run test ou yarn test
+npm run test
 ```
+**OU**
+
+```
+yarn test
+```
+
 
 5.2 **Docker**
 
