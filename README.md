@@ -22,6 +22,13 @@ Aplicadas técnicas de TDD, DDD e Clean Code.
 
 1. Clone o repositório 
 
+
+```
+
+git clone https://github.com/gasparellodev/billet_ewally.git
+
+```
+
 2. Resolver as dependencias do projeto
 
 
