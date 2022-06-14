@@ -31,8 +31,8 @@ export default class DateValidate {
     }
 
     private checkExpireDate() {
-        const billet = new Billet(this.value);
-        const informedExpirationFactor = billet.getDateFactor();
+        const boleto = new Billet(this.value);
+        const informedExpirationFactor = boleto.getDateFactor();
         if (informedExpirationFactor.length > 4) {
             const getExpireDate = new Date(`${informedExpirationFactor.slice(0,4)}-${informedExpirationFactor.slice(4,6)}-${informedExpirationFactor.slice(6,8)}`);            
             if (getExpireDate.toLocaleString('pt-BR') === 'Invalid Date') return false;

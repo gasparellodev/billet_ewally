@@ -1,7 +1,7 @@
-export default class Ticket {
+export default class Billet {
     private value: string;
     private errorMessage = '';
-    private typeDigitableLine = 'billet';
+    private typeDigitableLine = 'boleto';
     private DIGITS_FIELD1 = [0];
     private DIGITS_FIELD2 = [0];
     private DIGITS_FIELD3 = [0];
@@ -15,7 +15,7 @@ export default class Ticket {
     private CHECK_GENERAL_DIGITS_POSITION = [0];
     private INFORMED_DATE_FACTOR = [0];
     private INFORMED_AMOUNT = [0];
-    private TOTAL_DIGITS_billet = 47;
+    private TOTAL_DIGITS_BOLETO = 47;
     private TOTAL_DIGITS_COVENANT = 48;
 
     constructor (value: string) {
@@ -28,15 +28,15 @@ export default class Ticket {
     }
 
     public getDateFactor() {
-        let billet = this.value;
-        billet = this.cleanBillet(billet);
-        return this.getBlockFromDigitableLine(billet, this.INFORMED_DATE_FACTOR);
+        let boleto = this.value;
+        boleto = this.cleanBoleto(boleto);
+        return this.getBlockFromDigitableLine(boleto, this.INFORMED_DATE_FACTOR);
     }
 
     public getAmount() {
-        let billet = this.value;
-        billet = this.cleanBillet(billet);
-        const informedAmount = this.getBlockFromDigitableLine(billet, this.INFORMED_AMOUNT);
+        let boleto = this.value;
+        boleto = this.cleanBoleto(boleto);
+        const informedAmount = this.getBlockFromDigitableLine(boleto, this.INFORMED_AMOUNT);
         const indexInitialAmout = [...informedAmount].findIndex((digit, index) => {
             if (parseInt(digit) > 0) return index;
         });
@@ -44,44 +44,44 @@ export default class Ticket {
     }
 
     public getBarCode() {
-        let billet = this.value;
-        billet = this.cleanBillet(billet);
-        return this.getBlockFromDigitableLine(billet, this.CHECK_GENERAL_DIGITS_POSITION);
+        let boleto = this.value;
+        boleto = this.cleanBoleto(boleto);
+        return this.getBlockFromDigitableLine(boleto, this.CHECK_GENERAL_DIGITS_POSITION);
     }
 
-    private validate(billet: string) {
-        if (!billet) {
+    private validate(boleto: string) {
+        if (!boleto) {
             this.errorMessage = 'Uninformed typeable line!';
             return false;
         }
-        billet = this.cleanBillet(billet);
-        if (!this.isValidLength(billet)) {
+        boleto = this.cleanBoleto(boleto);
+        if (!this.isValidLength(boleto)) {
             this.errorMessage = 'Invalid typeable Line Size!';
             return false;
         }
-        this.prepareBilletValidate(billet);
-        if (!this.isValidDigits(billet)) {
+        this.prepareBoletoValidate(boleto);
+        if (!this.isValidDigits(boleto)) {
             this.errorMessage = 'Typeable line has invalid characters!';
             return false;
         }
-        if (this.hasAllDigitsEquals(billet)) {
+        if (this.hasAllDigitsEquals(boleto)) {
             this.errorMessage = 'Typeable line has a sequence of equal digits!';
             return false;
         }
         if (this.typeDigitableLine === 'covenant') {
-            const checkGeneralDigit = this.calculateCheckDigit(billet, this.CHECK_GENERAL_DIGITS_POSITION);
-            const generalDigitInformed = this.getBlockFromDigitableLine(billet, this.INFORMED_GENERAL_DIGIT);
+            const checkGeneralDigit = this.calculateCheckDigit(boleto, this.CHECK_GENERAL_DIGITS_POSITION);
+            const generalDigitInformed = this.getBlockFromDigitableLine(boleto, this.INFORMED_GENERAL_DIGIT);
             if (checkGeneralDigit !== parseInt(generalDigitInformed)) {
                 this.errorMessage = 'The general checker digit is invalid!';
                 return false;
             }
         }
-        const checkDigitField1 = this.calculateCheckDigit(billet, this.DIGITS_FIELD1);
-        const checkDigitField2 = this.calculateCheckDigit(billet, this.DIGITS_FIELD2);
-        const checkDigitField3 = this.calculateCheckDigit(billet, this.DIGITS_FIELD3);
-        const digitInformed1 = this.getBlockFromDigitableLine(billet, this.INFORMED_DIGIT1);
-        const digitInformed2 = this.getBlockFromDigitableLine(billet, this.INFORMED_DIGIT2);
-        const digitInformed3 = this.getBlockFromDigitableLine(billet, this.INFORMED_DIGIT3);
+        const checkDigitField1 = this.calculateCheckDigit(boleto, this.DIGITS_FIELD1);
+        const checkDigitField2 = this.calculateCheckDigit(boleto, this.DIGITS_FIELD2);
+        const checkDigitField3 = this.calculateCheckDigit(boleto, this.DIGITS_FIELD3);
+        const digitInformed1 = this.getBlockFromDigitableLine(boleto, this.INFORMED_DIGIT1);
+        const digitInformed2 = this.getBlockFromDigitableLine(boleto, this.INFORMED_DIGIT2);
+        const digitInformed3 = this.getBlockFromDigitableLine(boleto, this.INFORMED_DIGIT3);
         if (checkDigitField1 !== parseInt(digitInformed1)) {
             this.errorMessage = 'The first field checker digit is invalid!';
             return false;
@@ -95,16 +95,16 @@ export default class Ticket {
             return false;
         } 
         if (this.typeDigitableLine === 'covenant') {
-            const checkDigitField4 = this.calculateCheckDigit(billet, this.DIGITS_FIELD4); 
-            const digitInformed4 = this.getBlockFromDigitableLine(billet, this.INFORMED_DIGIT4);
+            const checkDigitField4 = this.calculateCheckDigit(boleto, this.DIGITS_FIELD4); 
+            const digitInformed4 = this.getBlockFromDigitableLine(boleto, this.INFORMED_DIGIT4);
             if (checkDigitField4 !== parseInt(digitInformed4)) {
                 this.errorMessage = 'The fourth field checker digit is invalid!';
                 return false;
             }
             return true;
         }       
-        const checkGeneralDigit = this.calculateCheckGeneralDigit(billet);
-        const generalDigitInformed = this.getBlockFromDigitableLine(billet, this.INFORMED_GENERAL_DIGIT);
+        const checkGeneralDigit = this.calculateCheckGeneralDigit(boleto);
+        const generalDigitInformed = this.getBlockFromDigitableLine(boleto, this.INFORMED_GENERAL_DIGIT);
         if (checkGeneralDigit !== parseInt(generalDigitInformed)) {
             this.errorMessage = 'The general checker digit is invalid!';
             return false;
@@ -112,17 +112,17 @@ export default class Ticket {
         return true;
     }
 
-    private cleanBillet(billet: string) {
-        return billet.replace(/[\.]/g, '');
+    private cleanBoleto(boleto: string) {
+        return boleto.replace(/[\.]/g, '');
     }
 
-    private isValidLength(billet: string) {
-        if (billet.length === 48) this.typeDigitableLine = 'covenant'; 
-        return billet.length === this.TOTAL_DIGITS_billet || billet.length === this.TOTAL_DIGITS_COVENANT;
+    private isValidLength(boleto: string) {
+        if (boleto.length === 48) this.typeDigitableLine = 'covenant'; 
+        return boleto.length === this.TOTAL_DIGITS_BOLETO || boleto.length === this.TOTAL_DIGITS_COVENANT;
     }
 
-    private prepareBilletValidate(billet: string) {
-        if (this.typeDigitableLine === 'billet') {
+    private prepareBoletoValidate(boleto: string) {
+        if (this.typeDigitableLine === 'boleto') {
             this.DIGITS_FIELD1 = [0, 1, 2];
             this.DIGITS_FIELD2 = [4];
             this.DIGITS_FIELD3 = [6];
@@ -152,17 +152,17 @@ export default class Ticket {
         }
     }
 
-    private isValidDigits(billet: string) {
-        return [...billet].every(digit => isNaN(parseInt(digit)) !== true);
+    private isValidDigits(boleto: string) {
+        return [...boleto].every(digit => isNaN(parseInt(digit)) !== true);
     }
 
-    private hasAllDigitsEquals(billet: string) {
-        const [firstDigit] = billet;
-        return [...billet].every(digit => digit === firstDigit);
+    private hasAllDigitsEquals(boleto: string) {
+        const [firstDigit] = boleto;
+        return [...boleto].every(digit => digit === firstDigit);
     }
 
-    private calculateCheckDigit(billet: string, position: number[]) {
-        const digitableLineBlocks = this.getBlockFromDigitableLine(billet, position);
+    private calculateCheckDigit(boleto: string, position: number[]) {
+        const digitableLineBlocks = this.getBlockFromDigitableLine(boleto, position);
         let calculate = 0;
         let multiplier = 2;
         let total = 0;
@@ -177,10 +177,10 @@ export default class Ticket {
         return digit;
     }
 
-    private getBlockFromDigitableLine(billet: string, positions: number[]) {
+    private getBlockFromDigitableLine(boleto: string, positions: number[]) {
         const blocks = [];
         for (const block of this.DIGITABLE_LINE_BLOCKS) {
-            blocks.push(billet.slice(block[0], block[1]));  
+            blocks.push(boleto.slice(block[0], block[1]));  
         }    
         let digitsInBlock = '';
         for (const position of positions) {
@@ -189,9 +189,9 @@ export default class Ticket {
         return digitsInBlock;
     }
 
-    private calculateCheckGeneralDigit(billet: string) {
+    private calculateCheckGeneralDigit(boleto: string) {
         const positions = this.CHECK_GENERAL_DIGITS_POSITION;
-        const digitableLineBlocks = this.getBlockFromDigitableLine(billet, positions);        
+        const digitableLineBlocks = this.getBlockFromDigitableLine(boleto, positions);        
         let total = 0;
         let multiplier = 2;
         for (const digit of [...digitableLineBlocks].reverse()) {

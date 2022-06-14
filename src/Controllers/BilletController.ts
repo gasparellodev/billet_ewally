@@ -13,13 +13,13 @@ export default class BilletController {
     }
 
     private validate(value: string) {
-        const billet = new Billet(value);
+        const boleto = new Billet(value);
         const dateValidate = new DateValidate(value);  
-        billet.getValue();
-        const getAmount = billet.getAmount();
+        boleto.getValue();
+        const getAmount = boleto.getAmount();
         const amount = parseFloat(`${getAmount.slice(0, -2)}.${getAmount.slice(-2)}`).toLocaleString('en-US', { minimumFractionDigits: 2});
         const expirationDate = dateValidate.getExpireDate().toLocaleString('sv-SE', { year: "numeric", month: "2-digit", day: "numeric"});
-        const barcode = billet.getBarCode();
+        const barcode = boleto.getBarCode();
         this.responseData = { barcode, amount, expirationDate }
         if (dateValidate.isExpired()) {
             this.errorMessage = 'Expired due date!';
